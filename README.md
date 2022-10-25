@@ -1,5 +1,4 @@
 # AWS Maven Wagon
-##NOTE: THIS PROJECT IS NOT SUPPORTED ANYMORE!!!
 
 [![GitHub version](https://badge.fury.io/gh/platform-team%2Faws-maven.svg)](http://badge.fury.io/gh/platform-team%2Faws-maven)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
@@ -32,7 +31,7 @@ To publish Maven artifacts to S3 a build extension must be defined in a project'
       <extension>
         <groupId>com.github.platform-team</groupId>
         <artifactId>aws-maven</artifactId>
-        <version>6.0.0</version>
+        <version>6.1-SNAPSHOT</version>
       </extension>
       ...
     </extensions>
@@ -75,7 +74,7 @@ Finally the `~/.m2/settings.xml` must be updated to include access and secret ke
       <username>0123456789ABCDEFGHIJ</username>
       <password>0123456789abcdefghijklmnopqrstuvwxyzABCD</password>
       <configuration>
-        <wagonProvider>s3</wagonProvider>
+        <region>us-west-1</region>
       </configuration>
     </server>
     <server>
@@ -83,7 +82,7 @@ Finally the `~/.m2/settings.xml` must be updated to include access and secret ke
       <username>0123456789ABCDEFGHIJ</username>
       <password>0123456789abcdefghijklmnopqrstuvwxyzABCD</password>
       <configuration>
-        <wagonProvider>s3</wagonProvider>
+        <region>us-west-1</region>
       </configuration>
     </server>
     ...

@@ -18,11 +18,11 @@ package com.github.platform.team.plugin;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.ClientConfiguration;
+import com.amazonaws.regions.DefaultAwsRegionProviderChain;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.internal.Mimetypes;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -42,8 +42,8 @@ import org.apache.maven.wagon.authentication.AuthenticationException;
 import org.apache.maven.wagon.authentication.AuthenticationInfo;
 import org.apache.maven.wagon.proxy.ProxyInfoProvider;
 import org.apache.maven.wagon.repository.Repository;
+import org.apache.maven.plugins.annotations.Parameter;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -75,6 +75,9 @@ public final class AmazonS3Wagon extends AbstractWagon {
     private volatile String bucketName;
 
     private volatile String baseDirectory;
+
+    @Parameter( property = "region", defaultValue = "us-east-1" )
+    private String region;
 
     /**
      * Creates a new instance of the wagon
@@ -120,37 +123,12 @@ public final class AmazonS3Wagon extends AbstractWagon {
         return key;
     }
 
-    private static void mkdirs(AmazonS3 amazonS3, String bucketName, String path, int index) throws TransferFailedException {
-        int directoryIndex = path.indexOf('/', index) + 1;
-
-        if (directoryIndex != 0) {
-            String directory = path.substring(0, directoryIndex);
-            PutObjectRequest putObjectRequest = createDirectoryPutObjectRequest(bucketName, directory);
-
-            try {
-                amazonS3.putObject(putObjectRequest);
-            } catch (AmazonServiceException e) {
-                throw new TransferFailedException(String.format("Cannot write directory '%s'", directory), e);
-            }
-
-            mkdirs(amazonS3, bucketName, path, directoryIndex);
-        }
-    }
-
-    private static PutObjectRequest createDirectoryPutObjectRequest(String bucketName, String key) {
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(new byte[0]);
-
-        ObjectMetadata objectMetadata = new ObjectMetadata();
-        objectMetadata.setContentLength(0);
-
-        return new PutObjectRequest(bucketName, key, inputStream, objectMetadata).withCannedAcl(CannedAccessControlList.PublicRead);
-    }
-
-    private static String getBucketRegion(AWSCredentialsProvider credentialsProvider, ClientConfiguration clientConfiguration, String bucketName) {
+    private String getBucketRegion(AWSCredentialsProvider credentialsProvider, ClientConfiguration clientConfiguration, String bucketName) {
         return AmazonS3Client.builder()
                 .withCredentials(credentialsProvider)
                 .withClientConfiguration(clientConfiguration)
                 .enableForceGlobalBucketAccess()
+                .withRegion(this.region)
                 .build()
                 .getBucketLocation(bucketName);
     }
@@ -165,10 +143,10 @@ public final class AmazonS3Wagon extends AbstractWagon {
 
             this.bucketName = S3Utils.getBucketName(repository);
             this.baseDirectory = S3Utils.getBaseDirectory(repository);
-
             this.amazonS3 = AmazonS3Client.builder()
                     .withCredentials(credentialsProvider)
                     .withClientConfiguration(clientConfiguration)
+                    .withRegion(this.region)
                     .withRegion(getBucketRegion(credentialsProvider, clientConfiguration, this.bucketName))
                     .build();
         }
@@ -257,8 +235,6 @@ public final class AmazonS3Wagon extends AbstractWagon {
     protected void putResource(File source, String destination, TransferProgress transferProgress) throws TransferFailedException,
             ResourceDoesNotExistException {
         String key = getKey(this.baseDirectory, destination);
-
-        mkdirs(amazonS3, this.bucketName, key, 0);
 
         InputStream in = null;
         try {
