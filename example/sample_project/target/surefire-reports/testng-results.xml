@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results total="4" passed="4" failed="0" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2022-10-25T20:25:31Z" name="DavesTestSuite" finished-at="2022-10-25T20:25:31Z" duration-ms="14">
+    <groups>
+      <group name="fast">
+        <method signature="AppTest.aFastTest()[pri:0, instance:org.martingilday.AppTest@365185bd]" name="aFastTest" class="org.martingilday.AppTest"/>
+      </group> <!-- fast -->
+      <group name="slow">
+        <method signature="AppTest.aSlowTest()[pri:0, instance:org.martingilday.AppTest@365185bd]" name="aSlowTest" class="org.martingilday.AppTest"/>
+      </group> <!-- slow -->
+      <group name="dktest">
+        <method signature="AppTest.aDKTest(java.lang.String)[pri:0, instance:org.martingilday.AppTest@365185bd]" name="aDKTest" class="org.martingilday.AppTest"/>
+      </group> <!-- dktest -->
+      <group name="functest">
+        <method signature="AppTest.aFuncTest()[pri:0, instance:org.martingilday.AppTest@365185bd]" name="aFuncTest" class="org.martingilday.AppTest"/>
+      </group> <!-- functest -->
+    </groups>
+    <test started-at="2022-10-25T20:25:31Z" name="AppTest" finished-at="2022-10-25T20:25:31Z" duration-ms="14">
+      <class name="org.martingilday.AppTest">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:org.martingilday.AppTest@365185bd]" started-at="2022-10-25T20:25:31Z" name="setUp" finished-at="2022-10-25T20:25:31Z" duration-ms="4" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="aDKTest(java.lang.String)[pri:0, instance:org.martingilday.AppTest@365185bd]" started-at="2022-10-25T20:25:31Z" name="aDKTest" finished-at="2022-10-25T20:25:31Z" duration-ms="3" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[David]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- aDKTest -->
+        <test-method signature="aFastTest()[pri:0, instance:org.martingilday.AppTest@365185bd]" started-at="2022-10-25T20:25:31Z" name="aFastTest" finished-at="2022-10-25T20:25:31Z" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- aFastTest -->
+        <test-method signature="aFuncTest()[pri:0, instance:org.martingilday.AppTest@365185bd]" started-at="2022-10-25T20:25:31Z" name="aFuncTest" finished-at="2022-10-25T20:25:31Z" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- aFuncTest -->
+        <test-method signature="aSlowTest()[pri:0, instance:org.martingilday.AppTest@365185bd]" started-at="2022-10-25T20:25:31Z" name="aSlowTest" finished-at="2022-10-25T20:25:31Z" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- aSlowTest -->
+      </class> <!-- org.martingilday.AppTest -->
+    </test> <!-- AppTest -->
+  </suite> <!-- DavesTestSuite -->
+</testng-results>

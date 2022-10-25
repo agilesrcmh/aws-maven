@@ -1,0 +1,17 @@
+
+<suite name="DavesTestSuite" allow-return-values="true">
+     <!-- -->
+  <parameter name="first-name"  value="David"/>
+  <test name="AppTest">
+    <!--
+    <groups>
+      <run>
+        <include name="functest"/>
+      </run>
+    </groups>
+    -->
+    <classes>
+      <class name="org.martingilday.AppTest"/>
+    </classes>
+  </test> <!----> -->
+</suite>

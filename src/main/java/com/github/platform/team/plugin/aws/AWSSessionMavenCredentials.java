@@ -16,34 +16,28 @@
 
 package com.github.platform.team.plugin.aws;
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.AWSSessionCredentials;
 import org.apache.maven.wagon.authentication.AuthenticationInfo;
 
-public class AWSMavenCredentialsProvider implements AWSCredentialsProvider {
+public class AWSSessionMavenCredentials implements AWSSessionCredentials {
 
     private final AuthenticationInfo authenticationInfo;
 
-    public AWSMavenCredentialsProvider(AuthenticationInfo authenticationInfo) {
+    public AWSSessionMavenCredentials(AuthenticationInfo authenticationInfo) {
         this.authenticationInfo = authenticationInfo;
     }
 
     @Override
-    public AWSCredentials getCredentials() {
-        AWSCredentials credentials = null;
-
-        if (this.authenticationInfo != null) {
-            if (this.authenticationInfo.getPassword().contains(":")) {
-                credentials = new AWSSessionMavenCredentials(this.authenticationInfo);
-            } else {
-                credentials = new AWSMavenCredentials(this.authenticationInfo);
-            }
-        }
-
-        return credentials;
+    public String getAWSAccessKeyId() {
+        return this.authenticationInfo.getUserName();
     }
 
     @Override
-    public void refresh() {
+    public String getAWSSecretKey() {
+        return this.authenticationInfo.getPassword().split(":")[0];
+    }
+
+    public String getSessionToken() {
+        return this.authenticationInfo.getPassword().split(":")[1];
     }
 }
